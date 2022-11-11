@@ -6,28 +6,23 @@
 #         self.right = right
 class Solution(object):
     def buildTree(self, preorder, inorder):
+  
+        if len(inorder) == 0:
+            return None
+
+        if len(inorder) == 1:
+            return TreeNode(preorder[0])
         
-        def recur(preorder,inorder):
-            if len(preorder)==0:
-                return None
-            if len(preorder)==1:
-                return TreeNode(preorder[0],None,None)
-            root = preorder[0]
-            idx = 0
-            for i in range(len(inorder)):
-                if inorder[i]==root:
-                    idx = i
-                    break
-                
-            inorderLeft = inorder[:idx]
-            inorderRight = inorder[idx+1:]
-            
-            preorderLeft = preorder[1:1+len(inorderLeft)]
-            preorderRight = preorder[1+len(inorderLeft):]
-            
-            leftNode = recur(preorderLeft,inorderLeft)
-            rightNode = recur(preorderRight,inorderRight)
-            
-            root = TreeNode(root,leftNode,rightNode)
-            return root
-        return recur(preorder,inorder)
+        rval = preorder[0]
+        root = TreeNode(rval)
+        
+        inorder_rval_index = inorder.index(rval)
+        left_inorder = inorder[:inorder_rval_index]
+        right_inorder = inorder[inorder_rval_index+1:]
+        left_preorder = preorder[1: len(left_inorder) + 1]
+        right_preorder = preorder[1 + len(left_preorder):]
+        
+        root.left = self.buildTree(left_preorder, left_inorder)
+        root.right = self.buildTree(right_preorder, right_inorder)
+        
+        return root
