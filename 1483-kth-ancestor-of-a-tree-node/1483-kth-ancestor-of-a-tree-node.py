@@ -33,8 +33,8 @@ class TreeAncestor(object):
         
     def getKthAncestor(self, node, k):
         base = 0
-        if log(k)>int(ceil(log(self.n)))+1:
-            return -1
+        # if k>int(ceil(log(self.n))):
+        #     return -1
         while k!=0:
             if k%2!=0:
                 node = self.recur(node,base)
