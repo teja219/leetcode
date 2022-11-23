@@ -12,12 +12,7 @@ class Solution(object):
             if matrix[i][j]=="0":
                 dp[(i,j)] = 0
                 return dp[(i,j)]
-            # if i==0:
-            #     dp[(i,j)] = recur(i,j-1)+1
-            #     return dp[(i,j)]
-            # if j==0:
-            #     dp[(i,j)] = recur(i-1,j)+1
-            #     return dp[(i,j)]
+            
             dp[(i,j)] = min(recur(i-1,j),recur(i,j-1),recur(i-1,j-1))+1
             return dp[(i,j)]
         
