@@ -7,9 +7,10 @@ class Solution(object):
         perfectSquares = []
         while x*x <= 10001:
             dp2[x*x] = True
-            # perfectSquares.append(x*x)
+            perfectSquares.append(x*x)
             x = x +1
         
+        perfectSquares.reverse()
         dp = {}
         
         def recur(n):
@@ -21,7 +22,7 @@ class Solution(object):
                 dp[n] = 1
                 return 1
             minAns = 10000000000000
-            for x in dp2:
+            for x in perfectSquares:
                 if n-x>0:
                     minAns = min(minAns,1+recur(n-x))
             dp[n] = minAns
