@@ -12,5 +12,5 @@ class Solution(object):
             dpHave[i] = max(dpHave[i-1],dpNotHave[i-2]-prices[i])
             dpNotHave[i] = max(dpNotHave[i-1],dpHave[i-1]+prices[i])
         
-        return max(dpHave[len(prices)-1],dpNotHave[len(prices)-1])
+        return dpNotHave[len(prices)-1]
         
