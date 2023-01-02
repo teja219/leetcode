@@ -38,12 +38,13 @@ class Codec:
             
             
             found = 0
-            for i in range(1,len(numbers)):
-                if numbers[i]>root:
-                    found = 1
-                    break
-            if found==0:
-                i = i+1
+            # for i in range(1,len(numbers)):
+            #     if numbers[i]>root:
+            #         found = 1
+            #         break
+            # if found==0:
+            #     i = i+1
+            i = bisect.bisect_right(numbers[1:],numbers[0])+1
             rootNode.left = deserializeRecur(numbers[1:i])
             rootNode.right = deserializeRecur(numbers[i:])
             return rootNode
