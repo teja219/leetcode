@@ -7,20 +7,20 @@
 class Solution(object):
     def isValidBST(self, root):
         
-        prevElement = [-100000000000000]
+        # [L,R] = [-100000000000000,100000000000000]
         isValid = [True]
-        def inorder(root):
-            if not isValid[0]:
+        def preorder(root,l,r):
+            if isValid[0]==False:
                 return
             if root==None:
                 return
-            inorder(root.left)
-            if root.val<=prevElement[0]:
-                isValid[0]=False
-            prevElement[0]=root.val
-            inorder(root.right)
+            if not (root.val>=l and root.val<=r):
+                isValid[0] = False
+                return
+            preorder(root.left,l,root.val-1)
+            preorder(root.right,root.val+1,r)
         
-        inorder(root)
+        preorder(root,-100000000000000,100000000000000)
         return isValid[0]
                 
         
