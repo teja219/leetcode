@@ -11,7 +11,6 @@ class Solution(object):
                     return strs[i][:count]
             count += 1
         
-        # print(count)
         return strs[0][:count]
                 
         
