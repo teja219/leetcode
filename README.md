@@ -13,33 +13,31 @@ response = requests.get(url, stream=True)
 columns = []
 rows = []
 
-# Ensure the request was successful
 if response.status_code == 200:
     # Parse the JSON incrementally using ijson
     parser = ijson.parse(response.raw)
     
-    current_field = None
+    current_row = None
     
     for prefix, event, value in parser:
-        if (prefix, event) == ('columns.item.name', 'string'):
-            # Collect column names
+        if prefix == 'columns.item.name':
             columns.append({'name': value})
-            current_field = 'name'
-        
-        elif (prefix, event) == ('columns.item.type', 'string') and current_field == 'name':
-            # Add type to the last added column
+        elif prefix == 'columns.item.type':
             columns[-1]['type'] = value
-            current_field = None
-            
-        elif prefix.startswith('rows.item.values.item'):
-            # Collect row values
-            if 'values' not in rows:
-                rows.append({'values': []})
-            rows[-1]['values'].append(value)
+        elif prefix == 'rows.item.values.item':
+            # Check if we are processing a new row
+            if current_row is None:
+                current_row = []
+            current_row.append(value)
+        elif prefix == 'rows.item.values' and event == 'end_array':
+            # End of the current row, add it to rows list
+            rows.append(current_row)
+            current_row = None
     
     # At this point, columns and rows should be fully populated
     print("Columns:", columns)
     for row in rows:
-        print("Row:", row['values'])
+        print("Row:", row)
 else:
     print(f"Failed to retrieve data. Status code: {response.status_code}")
+
